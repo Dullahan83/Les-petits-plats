@@ -44,6 +44,12 @@ export default class SearchAndFilter extends Liste {
                this.ingredientList.push(caps);
          });
       });
+      this.ingredientFilter.length != 0 &&
+         this.ingredientFilter.forEach((filter) => {
+            this.ingredientList = this.ingredientList.filter(
+               (element) => element != filter
+            );
+         });
       const directory = document.getElementById("ingredients-list");
       directory.innerHTML = "";
       this.ingredientList
@@ -60,6 +66,12 @@ export default class SearchAndFilter extends Liste {
             !this.ustensilList.includes(caps) && this.ustensilList.push(caps);
          });
       });
+      this.ustensilFilter.length != 0 &&
+         this.ustensilFilter.forEach((filter) => {
+            this.ustensilList = this.ustensilList.filter(
+               (element) => element != filter
+            );
+         });
       const directory = document.getElementById("ustensils-list");
       directory.innerHTML = "";
       this.ustensilList
@@ -92,6 +104,12 @@ export default class SearchAndFilter extends Liste {
             }
          }
       });
+      this.applianceFilter.length != 0 &&
+         this.applianceFilter.forEach((filter) => {
+            this.applianceList = this.applianceList.filter(
+               (element) => element != filter
+            );
+         });
       const directory = document.getElementById("appliances-list");
       directory.innerHTML = "";
       this.applianceList
@@ -180,12 +198,13 @@ export default class SearchAndFilter extends Liste {
             );
          this.listResult = [];
          this.handleSearchByFilter();
-         console.log(this.ingredientFilter);
-         console.log(this.applianceFilter);
-         console.log(this.ustensilFilter);
+         // console.log(this.ingredientFilter);
+         // console.log(this.applianceFilter);
+         // console.log(this.ustensilFilter);
       });
    }
 
+   // handle the search by main input
    handleMainSearch() {
       let list =
          this.listResult.length != 0 ? this.listResult : this.#originalList;
@@ -288,7 +307,7 @@ export default class SearchAndFilter extends Liste {
       if (this.listResult.length === 0) {
          this.listResult = this.#originalList;
       }
-      console.log(this.listResult);
+      // console.log(this.listResult);
       this.displayRecipes(this.listResult);
       this.initFilters(this.listResult);
    }

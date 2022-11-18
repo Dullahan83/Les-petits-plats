@@ -1,4 +1,3 @@
-import SearchAndFilter from "./filters.js";
 import Recipe from "./recipeObject.js";
 
 export default class Liste {
