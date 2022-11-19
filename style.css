@@ -7,10 +7,10 @@
    padding: 0;
    box-sizing: border-box;
 }
+
 body {
    width: 100%;
    height: 100%;
-   padding: 42px 100px;
    font-family: "Lato", sans-serif;
    font-size: 18px;
 }
@@ -24,6 +24,11 @@ header {
 }
 h2 {
    font-size: 18px;
+}
+#wrapper {
+   max-width: 1440px;
+   padding: 42px 100px;
+   margin: 0 auto;
 }
 /* search & filter section */
 
