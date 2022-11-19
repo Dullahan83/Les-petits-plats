@@ -51,6 +51,9 @@ h2 {
 .search-bar i {
    font-size: 32px;
 }
+.search-bar i:hover {
+   cursor: pointer;
+}
 
 #filters {
    display: flex;
@@ -91,7 +94,7 @@ h2 {
    max-width: 100px;
    overflow: hidden;
    text-overflow: ellipsis;
-   word-wrap: nowrap;
+   overflow-wrap: break-word;
    white-space: nowrap;
 }
 
@@ -131,6 +134,9 @@ h2 {
    font-size: 18px;
    transform: rotateX(180deg);
 }
+.filter-container i:hover {
+   cursor: pointer;
+}
 
 .filter-container ul {
    position: absolute;
@@ -155,6 +161,7 @@ h2 {
    flex-grow: 1;
    transition: 0.3s;
 }
+
 .menu-open > ul {
    display: grid;
    grid-template-columns: 1.3fr 1.3fr 1fr;
@@ -166,7 +173,7 @@ h2 {
    max-width: 170px;
    overflow: hidden;
    text-overflow: ellipsis;
-   word-wrap: nowrap;
+   overflow-wrap: break-word;
    white-space: nowrap;
 }
 
@@ -219,7 +226,7 @@ figure h3 {
 figcaption {
    margin-top: -4px;
    padding: 20px;
-   padding-bottom: none;
+   padding-bottom: 0;
    height: 186px;
    max-height: 186px;
    overflow-y: hidden;
@@ -248,8 +255,8 @@ figcaption div:first-of-type span {
    overflow-y: hidden;
    display: -webkit-box;
    -webkit-line-clamp: 6;
-   line-clamp: 6;
    -webkit-box-orient: vertical;
+   -moz-line-clamp: 6;
 }
 
 figure h3 {
@@ -267,7 +274,6 @@ figure li {
 figure li p {
    margin-left: 3px;
    overflow: hidden;
-   word-wrap: nowrap;
    white-space: nowrap;
    text-overflow: ellipsis;
 }
@@ -276,7 +282,6 @@ figure li p {
    max-width: 70%;
    overflow: hidden;
    text-overflow: ellipsis;
-   word-wrap: nowrap;
    white-space: nowrap;
 }
 
@@ -285,4 +290,8 @@ figure li p {
    width: fit-content;
    overflow-x: hidden;
    text-overflow: ellipsis;
+}
+
+.filter-container .grid {
+   display: grid;
 }

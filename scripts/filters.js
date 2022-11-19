@@ -254,8 +254,7 @@ export default class SearchAndFilter extends Liste {
 
          input.addEventListener("input", () => {
             if (input.value.length >= 3) {
-               directory.style.display = "grid";
-
+               directory.classList.add("grid");
                switch (input.id) {
                   case "ingredients":
                      this.ingredientList = this.ingredientList.filter(
@@ -298,11 +297,14 @@ export default class SearchAndFilter extends Liste {
                   default:
                      break;
                }
-            } else if (input.value.length < 3 && input.value.length + 1 === 3) {
-               this.listResult.length > 0
-                  ? this.initFilters(this.listResult)
-                  : this.initFilters(this.#originalList);
-               directory.style.display = "none";
+            } else if (input.value.length < 3) {
+               if (!directory.parentNode.classList.contains("menu-open")) {
+                  directory.classList.remove("grid");
+               } else {
+                  this.listResult.length > 0
+                     ? this.initFilters(this.listResult)
+                     : this.initFilters(this.#originalList);
+               }
             }
          });
       });
@@ -373,6 +375,7 @@ export default class SearchAndFilter extends Liste {
          "Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc.";
       container.appendChild(noResult);
    }
+
    //handle the display on click of the filter list
    handleDisplayingFilterList() {
       const buttons = document.querySelectorAll(".filter-container div label");
@@ -380,12 +383,15 @@ export default class SearchAndFilter extends Liste {
          btn.addEventListener("click", () => {
             const parent = btn.closest(".filter-container");
             const previous = btn.previousElementSibling;
-
             for (let i = 0; i < buttons.length; i++) {
-               if (buttons[i].previousElementSibling.id != previous.id)
+               if (buttons[i].previousElementSibling.id != previous.id) {
                   buttons[i]
                      .closest(".filter-container")
                      .classList.remove("menu-open");
+               }
+               if (previous.value.length < 3) {
+                  parent.querySelector("ul").classList.remove("grid");
+               }
             }
             if (parent.classList.contains("menu-open")) {
                btn.closest(".filter-container").classList.remove("menu-open");
@@ -393,10 +399,6 @@ export default class SearchAndFilter extends Liste {
                btn.closest(".filter-container").classList.add("menu-open");
             }
          });
-         // btn.previousElementSibling.addEventListener("input", (e) => {
-         //    e.target.value.length >= 3 &&
-         //       btn.closest(".filter-container").classList.add("menu-open");
-         // });
       });
    }
 }
