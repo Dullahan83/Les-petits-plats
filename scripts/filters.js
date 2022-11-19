@@ -254,6 +254,8 @@ export default class SearchAndFilter extends Liste {
 
          input.addEventListener("input", () => {
             if (input.value.length >= 3) {
+               directory.style.display = "grid";
+
                switch (input.id) {
                   case "ingredients":
                      this.ingredientList = this.ingredientList.filter(
@@ -266,6 +268,7 @@ export default class SearchAndFilter extends Liste {
                      this.ingredientList.forEach((element) =>
                         this.createDomFilter(directory, element)
                      );
+
                      break;
                   case "appliances":
                      this.applianceList = this.applianceList.filter(
@@ -296,7 +299,10 @@ export default class SearchAndFilter extends Liste {
                      break;
                }
             } else if (input.value.length < 3 && input.value.length + 1 === 3) {
-               this.initFilters(this.#originalList);
+               this.listResult.length > 0
+                  ? this.initFilters(this.listResult)
+                  : this.initFilters(this.#originalList);
+               directory.style.display = "none";
             }
          });
       });
@@ -370,7 +376,7 @@ export default class SearchAndFilter extends Liste {
    //handle the display on click of the filter list
    handleDisplayingFilterList() {
       const buttons = document.querySelectorAll(".filter-container div label");
-      buttons.forEach((btn) =>
+      buttons.forEach((btn) => {
          btn.addEventListener("click", () => {
             const parent = btn.closest(".filter-container");
             const previous = btn.previousElementSibling;
@@ -386,7 +392,11 @@ export default class SearchAndFilter extends Liste {
             } else {
                btn.closest(".filter-container").classList.add("menu-open");
             }
-         })
-      );
+         });
+         // btn.previousElementSibling.addEventListener("input", (e) => {
+         //    e.target.value.length >= 3 &&
+         //       btn.closest(".filter-container").classList.add("menu-open");
+         // });
+      });
    }
 }
