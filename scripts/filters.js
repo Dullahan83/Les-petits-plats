@@ -13,22 +13,23 @@ export default class SearchAndFilter extends Liste {
       this.ustensilFilter = [];
       this.applianceFilter = [];
       this.init(this.#originalList);
-      // this.#populateFilterList(this.listResult);
    }
-
+   //launch the needed methods
    init(list) {
       this.initFilters(list);
       this.initEvents();
    }
-   //
+   // call functions to create the filter lists depending on argument passed
    initFilters(list) {
       this.createIngredientFilterList(list);
       this.createUstensilsFilterList(list);
       this.createAppliancesFilterList(list);
    }
-
+   //initialise necessary events
    initEvents() {
       this.handleMainSearch();
+      this.handleFilterInputs();
+      this.handleDisplayingFilterList();
    }
 
    //Create initial ingredient list
@@ -53,7 +54,7 @@ export default class SearchAndFilter extends Liste {
       const directory = document.getElementById("ingredients-list");
       directory.innerHTML = "";
       this.ingredientList
-         .sort((a, b) => (a > b ? 1 : -1))
+         // .sort((a, b) => (a > b ? 1 : -1))
          .forEach((element) => this.createDomFilter(directory, element));
    }
 
@@ -198,9 +199,6 @@ export default class SearchAndFilter extends Liste {
             );
          this.listResult = [];
          this.handleSearchByFilter();
-         // console.log(this.ingredientFilter);
-         // console.log(this.applianceFilter);
-         // console.log(this.ustensilFilter);
       });
    }
 
@@ -242,22 +240,74 @@ export default class SearchAndFilter extends Liste {
                this.initFilters(this.listResult);
             }
          } else if (input.value.length < 3 && input.value.length + 1 === 3) {
-            this.displayRecipes(this.#originalList);
-            this.initFilters(this.#originalList);
+            this.listResult = [];
+            this.handleSearchByFilter();
          }
-         console.log(this.listResult);
       });
    }
 
+   // handle the filter by input in filter list
+   handleFilterInputs() {
+      const inputs = document.querySelectorAll(".filter-container div input");
+      inputs.forEach((input) => {
+         let directory = document.getElementById(`${input.id}-list`);
+
+         input.addEventListener("input", () => {
+            if (input.value.length >= 3) {
+               switch (input.id) {
+                  case "ingredients":
+                     this.ingredientList = this.ingredientList.filter(
+                        (ingredient) =>
+                           ingredient
+                              .toLowerCase()
+                              .includes(input.value.trim().toLowerCase())
+                     );
+                     directory.innerHTML = "";
+                     this.ingredientList.forEach((element) =>
+                        this.createDomFilter(directory, element)
+                     );
+                     break;
+                  case "appliances":
+                     this.applianceList = this.applianceList.filter(
+                        (appliance) =>
+                           appliance
+                              .toLowerCase()
+                              .includes(input.value.trim().toLowerCase())
+                     );
+                     directory.innerHTML = "";
+
+                     this.applianceList.forEach((element) =>
+                        this.createDomFilter(directory, element)
+                     );
+                     break;
+                  case "ustensils":
+                     this.ustensilList = this.ustensilList.filter((ustensil) =>
+                        ustensil
+                           .toLowerCase()
+                           .includes(input.value.trim().toLowerCase())
+                     );
+                     directory.innerHTML = "";
+
+                     this.ustensilList.forEach((element) =>
+                        this.createDomFilter(directory, element)
+                     );
+                     break;
+                  default:
+                     break;
+               }
+            } else if (input.value.length < 3 && input.value.length + 1 === 3) {
+               this.initFilters(this.#originalList);
+            }
+         });
+      });
+   }
+
+   //handle the recipe search by filters choice
    handleSearchByFilter() {
       let list =
          this.listResult.length != 0 ? this.listResult : this.#originalList;
-      console.log(list);
-
       if (this.ingredientFilter.length != 0) {
-         console.log(this.ingredientFilter);
          this.ingredientFilter.forEach((ingredient) => {
-            console.log(ingredient);
             this.listResult = list.filter((recipe) => {
                if (
                   recipe.ingredients.some((element) =>
@@ -266,16 +316,14 @@ export default class SearchAndFilter extends Liste {
                         .includes(ingredient.toLowerCase())
                   )
                ) {
-                  // console.log(recipe);
                   return recipe;
                }
             });
          });
+         list = this.listResult;
       }
       if (this.applianceFilter.length != 0) {
-         console.log(this.applianceFilter);
          this.applianceFilter.forEach((appliance) => {
-            console.log(appliance);
             this.listResult = list.filter((recipe) => {
                if (
                   recipe.appliance
@@ -286,32 +334,30 @@ export default class SearchAndFilter extends Liste {
                }
             });
          });
+         list = this.listResult;
       }
       if (this.ustensilFilter.length != 0) {
-         console.log(this.ustensilFilter);
          this.ustensilFilter.forEach((ustensil) => {
-            console.log(ustensil);
-
             this.listResult = list.filter((recipe) => {
                if (
                   recipe.ustensils.some((element) =>
                      element.toLowerCase().includes(ustensil.toLowerCase())
                   )
                ) {
-                  console.log(ustensil + "trouvé");
                   return recipe;
                }
             });
          });
+         list = this.listResult;
       }
       if (this.listResult.length === 0) {
          this.listResult = this.#originalList;
       }
-      // console.log(this.listResult);
       this.displayRecipes(this.listResult);
       this.initFilters(this.listResult);
    }
 
+   // display message when no result is returned
    displayNoResult() {
       const container = document.querySelector(".container");
       const noResult = document.createElement("h2");
@@ -320,5 +366,27 @@ export default class SearchAndFilter extends Liste {
       noResult.textContent =
          "Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc.";
       container.appendChild(noResult);
+   }
+   //handle the display on click of the filter list
+   handleDisplayingFilterList() {
+      const buttons = document.querySelectorAll(".filter-container div label");
+      buttons.forEach((btn) =>
+         btn.addEventListener("click", () => {
+            const parent = btn.closest(".filter-container");
+            const previous = btn.previousElementSibling;
+
+            for (let i = 0; i < buttons.length; i++) {
+               if (buttons[i].previousElementSibling.id != previous.id)
+                  buttons[i]
+                     .closest(".filter-container")
+                     .classList.remove("menu-open");
+            }
+            if (parent.classList.contains("menu-open")) {
+               btn.closest(".filter-container").classList.remove("menu-open");
+            } else {
+               btn.closest(".filter-container").classList.add("menu-open");
+            }
+         })
+      );
    }
 }
