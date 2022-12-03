@@ -143,7 +143,7 @@ export default class SearchAndFilter extends Liste {
                   this.createFilterCard(name, "ingredients");
                   this.handleSearchByFilter();
                }
-
+               document.getElementById(family).value = ""
                break;
             case "appliances-list":
                family = "appliances";
@@ -152,6 +152,7 @@ export default class SearchAndFilter extends Liste {
                   this.createFilterCard(name, "appliances");
                   this.handleSearchByFilter();
                }
+               document.getElementById(family).value = ""
                break;
             case "ustensils-list":
                family = "ustensils";
@@ -160,10 +161,13 @@ export default class SearchAndFilter extends Liste {
                   this.createFilterCard(name, "ustensils");
                   this.handleSearchByFilter();
                }
+               document.getElementById(family).value = ""
                break;
             default:
                break;
+
          }
+         directory.classList.remove("grid")
       });
    }
 
@@ -199,6 +203,7 @@ export default class SearchAndFilter extends Liste {
             );
          this.listResult = [];
          this.handleSearchByFilter();
+         // document.getElementById(`${family}-list`).classList.remove("grid")
       });
    }
 
@@ -236,9 +241,9 @@ export default class SearchAndFilter extends Liste {
                this.displayNoResult();
                this.initFilters(this.listResult)
             } else {
-               this.displayRecipes(this.listResult);
-               this.initFilters(this.listResult);
-               // this.handleSearchByFilter()
+               // this.displayRecipes(this.listResult);
+               // this.initFilters(this.listResult);
+               this.handleSearchByFilter()
 
             }
          } else if (input.value.length < 3 && input.value.length + 1 === 3) {
@@ -303,6 +308,10 @@ export default class SearchAndFilter extends Liste {
             } else if (input.value.length < 3) {
                if (!directory.parentNode.classList.contains("menu-open")) {
                   directory.classList.remove("grid");
+                  this.listResult.length > 0
+                     ? this.initFilters(this.listResult)
+                     : this.initFilters(this.#originalList);
+
                } else {
                   this.listResult.length > 0
                      ? this.initFilters(this.listResult)
@@ -405,48 +414,5 @@ export default class SearchAndFilter extends Liste {
       });
    }
 
-   // native loop version
-   // handleMainSearch() {
-   //    let list =
-   //       this.listResult.length != 0 ? this.listResult : this.#originalList;
-   //    const input = document.getElementById("search");
-   //    input.addEventListener("input", () => {
-   //       if (input.value.length >= 3) {
-   //          let array = [];
-   //          for (let recipe of list) {
-   //             let match = [];
-   //             for (let element of recipe.ingredients) {
-   //                if (
-   //                   element.ingredient
-   //                      .toLowerCase()
-   //                      .includes(input.value.trim().toLowerCase())
-   //                ) {
-   //                   match.push(recipe);
-   //                }
-   //             }
-   //             if (
-   //                match.length != 0 ||
-   //                recipe.description
-   //                   .toLowerCase()
-   //                   .includes(input.value.trim().toLowerCase()) ||
-   //                recipe.name
-   //                   .toLowerCase()
-   //                   .includes(input.value.trim().toLowerCase())
-   //             ) {
-   //                array.push(recipe);
-   //             }
-   //          }
-   //          this.listResult = array;
-   //          if (this.listResult.length === 0) {
-   //             this.displayNoResult();
-   //          } else {
-   //             this.displayRecipes(this.listResult);
-   //             this.initFilters(this.listResult);
-   //          }
-   //       } else if (input.value.length < 3 && input.value.length + 1 === 3) {
-   //          this.listResult = [];
-   //          this.handleSearchByFilter();
-   //       }
-   //    });
-   // }
+
 }
