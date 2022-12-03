@@ -1,22 +1,15 @@
-import Recipe from "./recipeObject.js";
-
+import { createRecipeCard } from "../utils/createRecipeCard.js";
 export default class Liste {
    constructor(data) {
       this.list = data;
       this.displayRecipes(this.list);
-      // this.initFilters();
    }
 
    displayRecipes(list) {
       const container = document.querySelector(".container");
       container.innerHTML = "";
       list.forEach((recipe) => {
-         const recipeObject = new Recipe(recipe);
-         recipeObject.createRecipeCard(container);
+         createRecipeCard(recipe, container);
       });
    }
-
-   // initFilters() {
-   //    const filters = new SearchAndFilter(this.list);
-   // }
 }

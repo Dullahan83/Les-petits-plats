@@ -209,6 +209,8 @@ export default class SearchAndFilter extends Liste {
       const input = document.getElementById("search");
       input.addEventListener("input", () => {
          if (input.value.length >= 3) {
+            console.log("c'est moi")
+
             this.listResult = list.filter((recipe) => {
                if (
                   recipe.ingredients.some((element) =>
@@ -221,10 +223,7 @@ export default class SearchAndFilter extends Liste {
                } else if (
                   recipe.name
                      .toLowerCase()
-                     .includes(input.value.toLowerCase().trim())
-               ) {
-                  return recipe;
-               } else if (
+                     .includes(input.value.toLowerCase().trim()) ||
                   recipe.description
                      .toLowerCase()
                      .includes(input.value.toLowerCase().trim())
@@ -235,9 +234,12 @@ export default class SearchAndFilter extends Liste {
 
             if (this.listResult.length === 0) {
                this.displayNoResult();
+               this.initFilters(this.listResult)
             } else {
                this.displayRecipes(this.listResult);
                this.initFilters(this.listResult);
+               // this.handleSearchByFilter()
+
             }
          } else if (input.value.length < 3 && input.value.length + 1 === 3) {
             this.listResult = [];
@@ -247,6 +249,7 @@ export default class SearchAndFilter extends Liste {
    }
 
    // handle the filter by input in filter list
+
    handleFilterInputs() {
       const inputs = document.querySelectorAll(".filter-container div input");
       inputs.forEach((input) => {
@@ -401,4 +404,49 @@ export default class SearchAndFilter extends Liste {
          });
       });
    }
+
+   // native loop version
+   // handleMainSearch() {
+   //    let list =
+   //       this.listResult.length != 0 ? this.listResult : this.#originalList;
+   //    const input = document.getElementById("search");
+   //    input.addEventListener("input", () => {
+   //       if (input.value.length >= 3) {
+   //          let array = [];
+   //          for (let recipe of list) {
+   //             let match = [];
+   //             for (let element of recipe.ingredients) {
+   //                if (
+   //                   element.ingredient
+   //                      .toLowerCase()
+   //                      .includes(input.value.trim().toLowerCase())
+   //                ) {
+   //                   match.push(recipe);
+   //                }
+   //             }
+   //             if (
+   //                match.length != 0 ||
+   //                recipe.description
+   //                   .toLowerCase()
+   //                   .includes(input.value.trim().toLowerCase()) ||
+   //                recipe.name
+   //                   .toLowerCase()
+   //                   .includes(input.value.trim().toLowerCase())
+   //             ) {
+   //                array.push(recipe);
+   //             }
+   //          }
+   //          this.listResult = array;
+   //          if (this.listResult.length === 0) {
+   //             this.displayNoResult();
+   //          } else {
+   //             this.displayRecipes(this.listResult);
+   //             this.initFilters(this.listResult);
+   //          }
+   //       } else if (input.value.length < 3 && input.value.length + 1 === 3) {
+   //          this.listResult = [];
+   //          this.handleSearchByFilter();
+   //       }
+   //    });
+   // }
 }

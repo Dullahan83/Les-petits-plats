@@ -172,6 +172,19 @@ h2 {
    grid-template-columns: 1.3fr 1.3fr 1fr;
    overflow-y: scroll;
 }
+.menu-open ul::-webkit-scrollbar {
+   width: 5px;
+   color: white;
+}
+
+.menu-open ul::-webkit-scrollbar-track {
+   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.562);
+}
+
+.menu-open ul::-webkit-scrollbar-thumb {
+   background-color: inherit;
+   border-radius: 5px;
+}
 .menu-open ul li {
    padding-right: 10px;
    width: fit-content;
@@ -181,7 +194,10 @@ h2 {
    overflow-wrap: break-word;
    white-space: nowrap;
 }
-
+.menu-open ul li label:hover {
+   background-color: #7db1ff;
+   cursor: pointer;
+}
 .menu-open label i {
    transform: rotateX(0);
 }
