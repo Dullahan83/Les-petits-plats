@@ -208,7 +208,6 @@ export default class SearchAndFilter extends Liste {
    }
 
 
-
    // handle the filter by input in filter list
 
    handleFilterInputs() {
