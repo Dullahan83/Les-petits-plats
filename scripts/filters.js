@@ -76,7 +76,7 @@ export default class SearchAndFilter extends Liste {
       const directory = document.getElementById("ustensils-list");
       directory.innerHTML = "";
       this.ustensilList
-         .sort((a, b) => (a > b ? 1 : -1))
+         // .sort((a, b) => (a > b ? 1 : -1))
          .forEach((element) => this.createDomFilter(directory, element));
    }
 
@@ -203,9 +203,51 @@ export default class SearchAndFilter extends Liste {
             );
          this.listResult = [];
          this.handleSearchByFilter();
+         // document.getElementById(`${family}-list`).classList.remove("grid")
       });
    }
 
+   // handle the search by main input
+   handleMainSearch() {
+      let list =
+         this.listResult.length != 0 ? this.listResult : this.#originalList;
+      const input = document.getElementById("search");
+      input.addEventListener("input", () => {
+         if (input.value.length >= 3) {
+            this.listResult = list.filter((recipe) => {
+               if (
+                  recipe.ingredients.some((element) =>
+                     element.ingredient
+                        .toLowerCase()
+                        .includes(input.value.toLowerCase().trim())
+                  )
+               ) {
+                  return recipe;
+               } else if (
+                  recipe.name
+                     .toLowerCase()
+                     .includes(input.value.toLowerCase().trim()) ||
+                  recipe.description
+                     .toLowerCase()
+                     .includes(input.value.toLowerCase().trim())
+               ) {
+                  return recipe;
+               }
+            });
+
+            if (this.listResult.length === 0) {
+               this.displayNoResult();
+               this.initFilters(this.listResult)
+            } else {
+               this.handleSearchByFilter()
+
+            }
+         } else if (input.value.length < 3 && input.value.length + 1 === 3) {
+            this.listResult = [];
+            this.handleSearchByFilter();
+         }
+      });
+   }
 
    // handle the filter by input in filter list
 
@@ -367,5 +409,4 @@ export default class SearchAndFilter extends Liste {
          });
       });
    }
-
 }
