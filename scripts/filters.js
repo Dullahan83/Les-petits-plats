@@ -203,7 +203,6 @@ export default class SearchAndFilter extends Liste {
             );
          this.listResult = [];
          this.handleSearchByFilter();
-         // document.getElementById(`${family}-list`).classList.remove("grid")
       });
    }
 
@@ -369,47 +368,4 @@ export default class SearchAndFilter extends Liste {
       });
    }
 
-   // native loop version
-   handleMainSearch() {
-      let list =
-         this.listResult.length != 0 ? this.listResult : this.#originalList;
-      const input = document.getElementById("search");
-      input.addEventListener("input", () => {
-         if (input.value.length >= 3) {
-            let array = [];
-            for (let recipe of list) {
-               let match = [];
-               for (let element of recipe.ingredients) {
-                  if (
-                     element.ingredient
-                        .toLowerCase()
-                        .includes(input.value.trim().toLowerCase())
-                  ) {
-                     match.push(recipe);
-                  }
-               }
-               if (
-                  match.length != 0 ||
-                  recipe.description
-                     .toLowerCase()
-                     .includes(input.value.trim().toLowerCase()) ||
-                  recipe.name
-                     .toLowerCase()
-                     .includes(input.value.trim().toLowerCase())
-               ) {
-                  array.push(recipe);
-               }
-            }
-            this.listResult = array;
-            if (this.listResult.length === 0) {
-               this.displayNoResult();
-            } else {
-               this.handleSearchByFilter()
-            }
-         } else if (input.value.length < 3 && input.value.length + 1 === 3) {
-            this.listResult = [];
-            this.handleSearchByFilter();
-         }
-      });
-   }
 }

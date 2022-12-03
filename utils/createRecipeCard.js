@@ -51,7 +51,6 @@ export function createRecipeCard(recipe, directory) {
             : `${recipe.ingredients[i].quantity}${recipe.ingredients[i].unit}`
          : ` ${recipe.ingredients[i].quantity}`;
 
-      // console.log(figure);
       ingredientList.appendChild(ingredient);
    }
    //set Attributes and fill infos
@@ -66,5 +65,4 @@ export function createRecipeCard(recipe, directory) {
    recipeName.textContent = recipe.name;
    time.textContent = `${recipe.time} min`;
    recipeInstruction.textContent = recipe.description;
-   // console.log(recipe.ingredients);
 }
