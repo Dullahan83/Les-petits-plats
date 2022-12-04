@@ -137,7 +137,6 @@ h2 {
 
 .filter-container i {
    display: flex;
-   /* margin-right: 10px; */
    font-size: 18px;
    transform: rotateX(180deg);
 }
