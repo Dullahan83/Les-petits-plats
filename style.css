@@ -94,7 +94,9 @@ h2 {
    font-size: 20px;
    color: #fff;
 }
-
+#filter-choice i:hover {
+   cursor: pointer;
+}
 #filter-choice p {
    max-width: 100px;
    overflow: hidden;
@@ -135,7 +137,7 @@ h2 {
 
 .filter-container i {
    display: flex;
-   margin-right: 10px;
+   /* margin-right: 10px; */
    font-size: 18px;
    transform: rotateX(180deg);
 }
@@ -194,23 +196,24 @@ h2 {
    overflow-wrap: break-word;
    white-space: nowrap;
 }
-.menu-open ul li label:hover {
-   background-color: #7db1ff;
+
+ul li label:hover {
    cursor: pointer;
+   color: rgba(0, 0, 0, 0.548);
 }
+
 .menu-open label i {
    transform: rotateX(0);
 }
 
-input[type="checkbox"]:checked + label {
-   color: black;
-}
 .ustensils {
    background-color: #ed6454;
 }
+
 .no-result {
    font-size: 24px;
 }
+
 .appliances {
    background-color: #68d9a4;
 }

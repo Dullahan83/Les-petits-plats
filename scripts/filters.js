@@ -35,6 +35,7 @@ export default class SearchAndFilter extends Liste {
    //Create initial ingredient list
    createIngredientFilterList(list) {
       this.ingredientList = [];
+      //normalize capitalization
       list.forEach((recipe) => {
          recipe.ingredients.forEach((element) => {
             let caps = element.ingredient.replace(
@@ -45,6 +46,7 @@ export default class SearchAndFilter extends Liste {
                this.ingredientList.push(caps);
          });
       });
+      // Filter element already chosen from list
       this.ingredientFilter.length != 0 &&
          this.ingredientFilter.forEach((filter) => {
             this.ingredientList = this.ingredientList.filter(
@@ -61,12 +63,14 @@ export default class SearchAndFilter extends Liste {
    //create initial ustensil list
    createUstensilsFilterList(list) {
       this.ustensilList = [];
+      //normalize capitalization
       list.forEach((recipe) => {
          recipe.ustensils.forEach((element) => {
             let caps = element.replace(element[0], element[0].toUpperCase());
             !this.ustensilList.includes(caps) && this.ustensilList.push(caps);
          });
       });
+      // Filter element already chosen from list
       this.ustensilFilter.length != 0 &&
          this.ustensilFilter.forEach((filter) => {
             this.ustensilList = this.ustensilList.filter(
@@ -83,6 +87,7 @@ export default class SearchAndFilter extends Liste {
    //create initial appliance list
    createAppliancesFilterList(list) {
       this.applianceList = [];
+      //normalize capitalization
       list.forEach((recipe) => {
          if (recipe.appliance) {
             if (typeof recipe.appliance != "string") {
@@ -105,6 +110,7 @@ export default class SearchAndFilter extends Liste {
             }
          }
       });
+      // Filter element already chosen from list
       this.applianceFilter.length != 0 &&
          this.applianceFilter.forEach((filter) => {
             this.applianceList = this.applianceList.filter(
@@ -133,6 +139,7 @@ export default class SearchAndFilter extends Liste {
       filter.append(check, label);
       directory.append(filter);
 
+      //on click create filter thumbnail and use search by filter method
       label.addEventListener("click", () => {
          let family = "";
          switch (directory.id) {
@@ -187,6 +194,7 @@ export default class SearchAndFilter extends Liste {
       card.append(cardText, button);
       button.appendChild(deleteIcon);
 
+      // on click remove targeted dom element and element from choosen filter list
       button.addEventListener("click", () => {
          card.remove();
          if (family === "ingredients") {
@@ -203,7 +211,6 @@ export default class SearchAndFilter extends Liste {
             );
          this.listResult = [];
          this.handleSearchByFilter();
-         // document.getElementById(`${family}-list`).classList.remove("grid")
       });
    }
 
@@ -396,15 +403,19 @@ export default class SearchAndFilter extends Liste {
                   buttons[i]
                      .closest(".filter-container")
                      .classList.remove("menu-open");
+                  buttons[i].previousElementSibling.value = ""
+                  buttons[i].closest(".filter-container").querySelector("ul").classList.remove("grid");
+                  const list = this.listResult.length > 0 ? this.listResult : this.#originalList;
+                  this.initFilters(list)
                }
                if (previous.value.length < 3) {
                   parent.querySelector("ul").classList.remove("grid");
                }
             }
             if (parent.classList.contains("menu-open")) {
-               btn.closest(".filter-container").classList.remove("menu-open");
+               parent.classList.remove("menu-open");
             } else {
-               btn.closest(".filter-container").classList.add("menu-open");
+               parent.classList.add("menu-open");
             }
          });
       });
