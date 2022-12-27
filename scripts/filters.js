@@ -32,7 +32,9 @@ export default class SearchAndFilter extends Liste {
       this.handleDisplayingFilterList();
    }
 
-   //Create initial ingredient list
+   /**
+    * @param {[recipeObjectList]} list 
+    */
    createIngredientFilterList(list) {
       this.ingredientList = [];
       //normalize capitalization
@@ -60,7 +62,9 @@ export default class SearchAndFilter extends Liste {
          .forEach((element) => this.createDomFilter(directory, element));
    }
 
-   //create initial ustensil list
+   /**
+    *  @param {[recipeObjectList]} list 
+    */
    createUstensilsFilterList(list) {
       this.ustensilList = [];
       //normalize capitalization
@@ -84,7 +88,9 @@ export default class SearchAndFilter extends Liste {
          .forEach((element) => this.createDomFilter(directory, element));
    }
 
-   //create initial appliance list
+   /**
+     *  @param {[recipeObjectList]} list 
+     */
    createAppliancesFilterList(list) {
       this.applianceList = [];
       //normalize capitalization
@@ -124,7 +130,11 @@ export default class SearchAndFilter extends Liste {
          .forEach((element) => this.createDomFilter(directory, element));
    }
 
-   // Create one item of the filter-lists
+   /**
+    * Create one item of the filter-lists
+    * @param {HTMLcollection} directory 
+    * @param {string} name 
+    */
    createDomFilter(directory, name) {
       const filter = document.createElement("li");
       const check = document.createElement("input");
@@ -178,7 +188,11 @@ export default class SearchAndFilter extends Liste {
       });
    }
 
-   // create filter thumbnails
+   /**
+    * create filter thumbnails
+    * @param {*} name 
+    * @param {*} family 
+    */
    createFilterCard(name, family) {
       const directory = document.getElementById("filter-choice");
       const card = document.createElement("div");

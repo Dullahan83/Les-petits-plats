@@ -4,7 +4,9 @@ export default class Liste {
       this.list = data;
       this.displayRecipes(this.list);
    }
-
+   /**
+    * @param {[recipeObjectList]} list 
+    */
    displayRecipes(list) {
       const container = document.querySelector(".container");
       container.innerHTML = "";
