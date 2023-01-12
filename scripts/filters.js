@@ -14,12 +14,17 @@ export default class SearchAndFilter extends Liste {
       this.applianceFilter = [];
       this.init(this.#originalList);
    }
-   //launch the needed methods
+   /**
+    * @param {[recipeObjectList]} list 
+    */
    init(list) {
       this.initFilters(list);
       this.initEvents();
    }
-   // call functions to create the filter lists depending on argument passed
+   /**
+    * call functions to create the filter lists
+    * @param {[recipeObjectList]} list 
+    */
    initFilters(list) {
       this.createIngredientFilterList(list);
       this.createUstensilsFilterList(list);
@@ -190,8 +195,8 @@ export default class SearchAndFilter extends Liste {
 
    /**
     * create filter thumbnails
-    * @param {*} name 
-    * @param {*} family 
+    * @param {string} name 
+    * @param {string} family 
     */
    createFilterCard(name, family) {
       const directory = document.getElementById("filter-choice");
@@ -224,52 +229,64 @@ export default class SearchAndFilter extends Liste {
                (ingredient) => ingredient != name
             );
          this.listResult = [];
+         this.handleMainSearch()
          this.handleSearchByFilter();
       });
    }
 
    // handle the search by main input
    handleMainSearch() {
+      // if list result is empty use original list
       let list =
          this.listResult.length != 0 ? this.listResult : this.#originalList;
       const input = document.getElementById("search");
+      this.mainSearch(list)
       input.addEventListener("input", () => {
-         if (input.value.length >= 3) {
-            this.listResult = list.filter((recipe) => {
-               if (
-                  recipe.ingredients.some((element) =>
-                     element.ingredient
-                        .toLowerCase()
-                        .includes(input.value.toLowerCase().trim())
-                  )
-               ) {
-                  return recipe;
-               } else if (
-                  recipe.name
-                     .toLowerCase()
-                     .includes(input.value.toLowerCase().trim()) ||
-                  recipe.description
-                     .toLowerCase()
-                     .includes(input.value.toLowerCase().trim())
-               ) {
-                  return recipe;
-               }
-            });
-
-            if (this.listResult.length === 0) {
-               this.displayNoResult();
-               this.initFilters(this.listResult)
-            } else {
-               this.handleSearchByFilter()
-
-            }
-         } else if (input.value.length < 3 && input.value.length + 1 === 3) {
-            this.listResult = [];
-            this.handleSearchByFilter();
-         }
+         this.mainSearch(list)
       });
    }
+   /**
+    * 
+    * @param {object[]} list 
+    * @param {HTMLElement} input 
+    */
+   mainSearch(list) {
+      const input = document.getElementById("search");
 
+      if (input.value.length >= 3) {
+         this.listResult = list.filter((recipe) => {
+            if (
+               recipe.ingredients.some((element) =>
+                  element.ingredient
+                     .toLowerCase()
+                     .includes(input.value.toLowerCase().trim())
+               )
+            ) {
+               return recipe;
+            } else if (
+               recipe.name
+                  .toLowerCase()
+                  .includes(input.value.toLowerCase().trim()) ||
+               recipe.description
+                  .toLowerCase()
+                  .includes(input.value.toLowerCase().trim())
+            ) {
+               return recipe;
+            }
+         });
+
+         if (this.listResult.length === 0) {
+            this.displayNoResult();
+            this.initFilters(this.listResult)
+         } else {
+            this.handleSearchByFilter()
+            // this.initFilters(this.listResult)
+         }
+      } else if (input.value.length < 3 && input.value.length + 1 === 3) {
+         this.listResult = [];
+         this.handleSearchByFilter();
+      }
+   }
    // handle the filter by input in filter list
 
    handleFilterInputs() {
@@ -341,6 +358,7 @@ export default class SearchAndFilter extends Liste {
 
    //handle the recipe search by filters choice
    handleSearchByFilter() {
+      // if list result is empty use original list
       let list =
          this.listResult.length != 0 ? this.listResult : this.#originalList;
       if (this.ingredientFilter.length != 0) {
@@ -350,7 +368,7 @@ export default class SearchAndFilter extends Liste {
                   recipe.ingredients.some((element) =>
                      element.ingredient
                         .toLowerCase()
-                        .includes(ingredient.toLowerCase())
+                     === ingredient.toLowerCase()
                   )
                ) {
                   return recipe;
@@ -365,7 +383,7 @@ export default class SearchAndFilter extends Liste {
                if (
                   recipe.appliance
                      .toLowerCase()
-                     .includes(appliance.toLowerCase())
+                  === appliance.toLowerCase()
                ) {
                   return recipe;
                }
@@ -378,7 +396,7 @@ export default class SearchAndFilter extends Liste {
             this.listResult = list.filter((recipe) => {
                if (
                   recipe.ustensils.some((element) =>
-                     element.toLowerCase().includes(ustensil.toLowerCase())
+                     element.toLowerCase() === ustensil.toLowerCase()
                   )
                ) {
                   return recipe;
@@ -434,4 +452,51 @@ export default class SearchAndFilter extends Liste {
          });
       });
    }
+
+
+   // native loop version
+   // handleMainSearch() {
+   //    let list =
+   //       this.listResult.length != 0 ? this.listResult : this.#originalList;
+   //    const input = document.getElementById("search");
+   //    input.addEventListener("input", () => {
+   //       if (input.value.length >= 3) {
+   //          let array = [];
+   //          for (let recipe of list) {
+   //             let match = [];
+   //             for (let element of recipe.ingredients) {
+   //                if (
+   //                   element.ingredient
+   //                      .toLowerCase()
+   //                      .includes(input.value.trim().toLowerCase())
+   //                ) {
+   //                   match.push(recipe);
+   //                }
+   //             }
+   //             if (
+   //                match.length != 0 ||
+   //                recipe.description
+   //                   .toLowerCase()
+   //                   .includes(input.value.trim().toLowerCase()) ||
+   //                recipe.name
+   //                   .toLowerCase()
+   //                   .includes(input.value.trim().toLowerCase())
+   //             ) {
+   //                array.push(recipe);
+   //             }
+   //          }
+   //          this.listResult = array;
+   //          if (this.listResult.length === 0) {
+   //             this.displayNoResult();
+   //          } else {
+   //             this.handleSearchByFilter()
+   //          }
+   //       } else if (input.value.length < 3 && input.value.length + 1 === 3) {
+   //          this.listResult = [];
+   //          this.handleSearchByFilter();
+   //       }
+   //    });
+   // }
 }
+
+/**ahmadouwalyndiaye@gmail.com */
